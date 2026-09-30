@@ -160,6 +160,23 @@ try:
     })()"""))
     capture = call("Page.captureScreenshot", {"format": "png"})
     (profile / "mcp-comparison.png").write_bytes(base64.b64decode(capture["data"]))
+    print("Diagram iframe overflow:", evaluate("""(async()=>{
+      const overflows=[];
+      const frames=[...document.querySelectorAll('.archify-diagram')];
+      for(const frame of frames)frame.loading='eager';
+      for(const frame of frames){
+        frame.scrollIntoView({block:'center'});
+        const deadline=Date.now()+20000;
+        while(!frame.contentDocument?.querySelector('svg')){
+          if(Date.now()>deadline)throw Error(`${frame.src} did not load`);
+          await new Promise(r=>setTimeout(r,100));
+        }
+        const root=frame.contentDocument.documentElement;
+        const size={src:frame.src.split('/').pop(),viewport:[root.clientWidth,root.clientHeight],content:[root.scrollWidth,root.scrollHeight],scrollbar:[root.offsetWidth-root.clientWidth,root.offsetHeight-root.clientHeight]};
+        if(size.content[0]>size.viewport[0]+2||size.content[1]>size.viewport[1]+2)overflows.push(size);
+      }
+      return JSON.stringify(overflows);
+    })()"""))
     call("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 1, "mobile": True})
     print(evaluate("""(async()=>{
       document.querySelector('.section-rail a[href="#how"]').click();
@@ -167,6 +184,10 @@ try:
       const r=document.querySelector('.section-rail').getBoundingClientRect();
       if(r.left<0||r.right>innerWidth||r.bottom>innerHeight)throw Error('mobile rail overflow');
       if(document.documentElement.scrollWidth>innerWidth)throw Error('horizontal overflow');
+      const frames=[...document.querySelectorAll('.archify-diagram')];
+      if(frames.length!==21||frames.some(frame=>frame.getAttribute('scrolling')!=='no'))throw Error('diagram scrollbars are not disabled');
+      const overflowing=frames.filter(frame=>frame.contentDocument.documentElement.scrollWidth>frame.clientWidth+2||frame.contentDocument.documentElement.scrollHeight>frame.clientHeight+2);
+      if(overflowing.length)throw Error(`mobile diagram overflow: ${overflowing.map(frame=>frame.src).join(', ')}`);
       return 'PASS: mobile 390px rail and page fit viewport';
     })()"""))
     capture = call("Page.captureScreenshot", {"format": "png"})

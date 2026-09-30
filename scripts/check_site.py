@@ -34,6 +34,7 @@ class SiteCheck(HTMLParser):
         if tag == "iframe":
             assert attrs.get("title"), "diagram iframe missing title"
             assert attrs.get("loading") == "lazy", "diagram must lazy load"
+            assert attrs.get("scrolling") == "no", "diagram iframe scrollbar must be hidden"
             self.diagrams.append(attrs["src"].split("?")[0])
         if tag == "link" and attrs.get("href", "").startswith("http") is False:
             self.resources.append(attrs.get("href", ""))
