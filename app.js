@@ -100,9 +100,9 @@ updateSectionRail();
 async function registerGuideTools() {
   if (!document.modelContext?.registerTool) return;
 
-  const guideSections = [...document.querySelectorAll("main section[id]")].map((section) => ({
+  const guideSections = [...document.querySelectorAll("main > section[id]:not(#top)")].map((section) => ({
     id: section.id,
-    title: section.querySelector("h1, h2")?.innerText.trim() || section.getAttribute("aria-label") || section.id,
+    title: section.querySelector("h1, h2")?.innerText.trim().replace(/\s+/g, " ") || section.getAttribute("aria-label") || section.id,
     text: section.innerText.trim(),
   }));
   const sectionIds = guideSections.map(({ id }) => id);

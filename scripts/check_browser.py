@@ -5,9 +5,11 @@ import io
 import json
 import re
 import subprocess
+import sys
 import tempfile
 import threading
 import time
+import unicodedata
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -20,6 +22,42 @@ args = argparse.ArgumentParser()
 args.add_argument("--export-webp", action="store_true")
 args.add_argument("--export-only")
 options = args.parse_args()
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
+
+def display_width(value):
+    return sum(2 if unicodedata.east_asian_width(char) in "WF" else 1 for char in str(value))
+
+
+def print_table(headers, rows):
+    widths = [max(display_width(value) for value in column) for column in zip(headers, *rows)]
+    border = "+" + "+".join("-" * (width + 2) for width in widths) + "+"
+    print(border)
+    for row in [headers, *rows]:
+        print("| " + " | ".join(str(value) + " " * (width - display_width(value)) for value, width in zip(row, widths)) + " |")
+        if row is headers:
+            print(border)
+    print(border)
+
+
+def print_webmcp_tui(target, browser, tools, sections):
+    print("\n+" + "=" * 76 + "+")
+    print("|" + "WebMCP Browser Test Client".center(76) + "|")
+    print("+" + "=" * 76 + "+")
+    print(f"Target: {target}\n")
+    print("1. Browser / WebMCP")
+    print(f"Browser    {browser}")
+    print("modelContext (test shim)  ✓")
+    print("getTools (test shim)      ✓")
+    print("executeTool (test shim)  ✓\n")
+    print("2. Registered WebMCP Tools")
+    print_table(["#", "Tool", "Title", "Description"], [
+        [index, tool["name"], tool["title"], tool["description"]]
+        for index, tool in enumerate(tools)
+    ])
+    print("\n3. Guide Sections")
+    print_table(["#", "ID", "Section"], [[index, *section.split(": ", 1)] for index, section in enumerate(sections)])
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -74,6 +112,7 @@ try:
             assert time.time() < deadline, "Page load timed out"
             time.sleep(.1)
 
+    browser = call("Browser.getVersion").get("product", "Chrome")
     call("Page.enable")
     diagrams = sorted((ROOT / "diagrams").glob("*.html"))
     assert len(diagrams) == 21
@@ -113,12 +152,12 @@ try:
 
         page.write_text(re.sub(r'<img[^>]+src="assets/[^>]+>', dimensions, text), encoding="utf-8")
 
-    call("Page.addScriptToEvaluateOnNewDocument", {"source": "document.modelContext={tools:[],registerTool(tool){this.tools.push(tool);return Promise.resolve()}};"})
+    call("Page.addScriptToEvaluateOnNewDocument", {"source": "document.modelContext={tools:[],async registerTool(tool){this.tools.push(tool)},async getTools(){return this.tools},async executeTool(tool,args){return await tool.execute(args)}};"})
     navigate("")
     evaluate("document.documentElement.style.scrollBehavior='auto'")
-    print(evaluate("""(async()=>{
+    registration = json.loads(evaluate("""(async()=>{
       await new Promise(r=>setTimeout(r,0));
-      const tools=document.modelContext.tools;
+      const tools=await document.modelContext.getTools();
       const names=tools.map(tool=>tool.name).sort();
       const expected=['list_webmcp_guide_sections','read_webmcp_guide_section','search_webmcp_guide'].sort();
       if(JSON.stringify(names)!==JSON.stringify(expected))throw Error(`registered tools: ${names}`);
@@ -127,12 +166,20 @@ try:
       const find=name=>tools.find(tool=>tool.name===name);
       const sections=await find('list_webmcp_guide_sections').execute({});
       if(!sections.includes('why:')||!sections.includes('resources:'))throw Error('section list incomplete');
-      const read=await find('read_webmcp_guide_section').execute({sectionId:'mcp'});
+      if(sections.split('\\n').length!==7)throw Error('section list should match the seven main navigation sections');
+      const read=await document.modelContext.executeTool(find('read_webmcp_guide_section'),{sectionId:'mcp'});
       if(!read.includes('MCP 서버와 WebMCP'))throw Error('section reader failed');
-      const search=await find('search_webmcp_guide').execute({query:'Community Group'});
+      const search=await document.modelContext.executeTool(find('search_webmcp_guide'),{query:'Community Group'});
       if(!search.includes('practice:'))throw Error('guide search failed');
-      return 'PASS: 3 registered read-only WebMCP tools execute successfully';
+      return JSON.stringify({status:'PASS: 3 registered read-only WebMCP tools execute successfully',tools:tools.map(({name,title,description})=>({name,title,description})),sections:sections.split('\\n')});
     })()"""))
+    print_webmcp_tui(
+        f"http://127.0.0.1:{server.server_port}/",
+        browser,
+        registration["tools"],
+        registration["sections"],
+    )
+    print(registration["status"])
     print(evaluate("""(async()=>{
       const assert=(ok,msg)=>{if(!ok)throw Error(msg)};
       const wait=()=>new Promise(r=>setTimeout(r,200));
