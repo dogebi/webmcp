@@ -198,15 +198,11 @@ try:
         time.sleep(.2)
         print(evaluate("""(()=>{
           const hero=getComputedStyle(document.querySelector('.hero'));
-          const badge=document.querySelector('.destroy-badge');
-          const box=badge.getBoundingClientRect();
           if(!matchMedia('(orientation: landscape)').matches)throw Error('landscape media');
           if(hero.gridTemplateColumns.split(' ').length!==2)throw Error('landscape hero columns');
           if(document.documentElement.scrollWidth>innerWidth)throw Error('landscape horizontal overflow');
-          if(box.left<0||box.right>document.documentElement.scrollWidth)throw Error('badge overflow');
-          if(badge.href!=='https://destroy.spritefusion.com/?from=badge')throw Error('badge link');
-          if(badge.querySelector('img').alt!=='Destroy this website')throw Error('badge alt');
-          return `PASS: ${innerWidth}x${innerHeight} landscape layout, badge and page fit`;
+          if(document.querySelector('.destroy-badge'))throw Error('removed badge is still present');
+          return `PASS: ${innerWidth}x${innerHeight} landscape layout and page fit`;
         })()"""))
         if width == 844:
             capture = call("Page.captureScreenshot", {"format": "png"})
