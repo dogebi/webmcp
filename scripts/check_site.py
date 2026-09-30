@@ -51,7 +51,7 @@ missing = [src for src in parser.resources if not (ROOT / src).is_file()]
 assert not missing, f"missing page resources: {missing}"
 assert (ROOT / "styles.css").is_file() and (ROOT / "app.js").is_file()
 local_images = [src for src in parser.images if not src.startswith(("http://", "https://"))]
-assert len(local_images) == len(parser.diagrams) == 19
+assert len(local_images) == len(parser.diagrams) == 21
 for src in local_images:
     assert src.endswith(".webp"), f"non-WebP image: {src}"
     data = (ROOT / src).read_bytes()
@@ -67,4 +67,4 @@ for src in parser.diagrams:
     if source["connections"]:
         assert 'data-animate="edge"' in html, f"missing animated arrows: {src}"
 print(f"OK: {len(parser.ids)} unique IDs, {len(parser.images)} image references, all local assets and anchors resolve")
-print("OK: 19 WebP images and embedded Archify diagrams; 20 diagram sources retain trace animation, theme/export and reduced motion")
+print("OK: 21 WebP images and embedded Archify diagrams; 21 diagram sources retain trace animation, theme/export and reduced motion")

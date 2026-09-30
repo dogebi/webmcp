@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "WebMCP: 사람과 에이전트가 쓰는 한 사이트",
+    "subtitle": "사람은 화면을, 에이전트는 페이지 도구를 사용합니다",
+    "animation": "trace",
+    "viewBox": [920, 500]
+  },
+  "components": [
+    { "id": "people", "type": "frontend", "label": "사람", "sublabel": "화면을 보고 클릭", "pos": [45, 125], "size": [190, 72] },
+    { "id": "agent", "type": "frontend", "label": "AI 에이전트", "sublabel": "작업을 위임받음", "pos": [45, 315], "size": [190, 72] },
+    { "id": "ui", "type": "backend", "label": "웹사이트 화면", "sublabel": "사람을 위한 UI", "pos": [365, 110], "size": [200, 72] },
+    { "id": "tools", "type": "backend", "label": "WebMCP 도구", "sublabel": "발견 · 입력 · 실행", "pos": [365, 300], "size": [200, 72], "tag": "PAGE TOOLS" },
+    { "id": "logic", "type": "external", "label": "기존 사이트 기능", "sublabel": "같은 페이지 로직", "pos": [675, 205], "size": [200, 72] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "하나의 웹사이트", "wraps": ["ui", "tools", "logic"] }
+  ],
+  "connections": [
+    { "from": "people", "to": "ui", "label": "화면 이용", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "from": "agent", "to": "tools", "label": "도구 호출", "variant": "emphasis", "fromSide": "right", "toSide": "left" },
+    { "from": "ui", "to": "logic", "label": "사람의 작업", "fromSide": "right", "toSide": "left" },
+    { "from": "tools", "to": "logic", "label": "에이전트 작업", "variant": "emphasis", "fromSide": "right", "toSide": "left" }
+  ],
+  "cards": []
+}

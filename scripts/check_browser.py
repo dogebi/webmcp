@@ -18,6 +18,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 args = argparse.ArgumentParser()
 args.add_argument("--export-webp", action="store_true")
+args.add_argument("--export-only")
 options = args.parse_args()
 
 
@@ -75,7 +76,7 @@ try:
 
     call("Page.enable")
     diagrams = sorted((ROOT / "diagrams").glob("*.html"))
-    assert len(diagrams) == 20
+    assert len(diagrams) == 21
     for path in diagrams:
         navigate(f"diagrams/{path.name}?theme=dark")
         assert evaluate("document.querySelector('svg').dataset.animation") == "trace"
@@ -86,7 +87,7 @@ try:
         evaluate("document.querySelector('#btn-theme').click(); document.querySelector('#btn-export').click()")
         assert evaluate("document.querySelector('#export-menu').classList.contains('open')")
         evaluate("Archify.exportMenu.close(false)")
-        if options.export_webp:
+        if options.export_webp and (not options.export_only or path.stem == options.export_only):
             call("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-reduced-motion", "value": "reduce"}]})
             evaluate("new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
             box = evaluate("JSON.parse(JSON.stringify(document.querySelector('svg').getBoundingClientRect()))")
@@ -96,7 +97,7 @@ try:
             with Image.open(io.BytesIO(base64.b64decode(capture["data"]))) as image:
                 image.save(ROOT / "assets" / f"{path.stem}-v2.webp", "WEBP", quality=85, method=6)
             call("Emulation.setEmulatedMedia", {"features": []})
-    print("PASS: 20 Archify diagrams, animation, theme toggle and export menus")
+    print("PASS: 21 Archify diagrams, animation, theme toggle and export menus")
 
     if options.export_webp:
         page = ROOT / "index.html"
@@ -139,6 +140,21 @@ try:
     })()"""))
     capture = call("Page.captureScreenshot", {"format": "png"})
     (profile / "desktop.png").write_bytes(base64.b64decode(capture["data"]))
+    print(evaluate("""(async()=>{
+      for(const slug of ['14-legacy-mcp','21-webmcp-agent-flow']){
+        const frame=document.querySelector(`iframe[src^="diagrams/${slug}"]`);
+        frame.scrollIntoView();
+        const deadline=Date.now()+10000;
+        while(!frame.contentDocument?.querySelector('svg')){
+          if(Date.now()>deadline)throw Error(`${slug} did not load`);
+          await new Promise(r=>setTimeout(r,100));
+        }
+        if(frame.contentDocument.querySelector('svg').dataset.animation!=='trace')throw Error(`${slug} animation`);
+      }
+      return 'PASS: legacy MCP and new WebMCP comparison diagrams load with animation';
+    })()"""))
+    capture = call("Page.captureScreenshot", {"format": "png"})
+    (profile / "mcp-comparison.png").write_bytes(base64.b64decode(capture["data"]))
     call("Emulation.setDeviceMetricsOverride", {"width": 390, "height": 844, "deviceScaleFactor": 1, "mobile": True})
     print(evaluate("""(async()=>{
       document.querySelector('.section-rail a[href="#how"]').click();
