@@ -48,6 +48,17 @@ function Panel({title, color = 'cyan', children}) {
     h(Text, {bold: true, color}, title), children);
 }
 
+function Progress({active}) {
+  const [frame, setFrame] = useState(0);
+  const frames = ['·', '▂', '▄', '▆', '█', '▆', '▄', '▂'];
+  useEffect(() => {
+    const timer = setInterval(() => setFrame(value => (value + 1) % frames.length), 100);
+    return () => clearInterval(timer);
+  }, []);
+  return h(Text, {color: 'cyan'},
+    `${frames[frame]} ${active >= 0 ? `[${active + 1}/${checks.length}] ${checks[active].label} 검사 중` : '검사 준비 중'} · 잠시 기다려주세요`);
+}
+
 function statusText(status) {
   if (status === 'passed') return h(Text, {color: 'green'}, '✓ passed');
   if (status === 'failed') return h(Text, {color: 'red'}, '✗ failed');
@@ -162,6 +173,7 @@ function App() {
     ] : [h(Text, {key: 'todo-loading', dimColor: true}, 'Waiting for todo tool execution…')]),
     h(Box, {flexDirection: 'column', borderStyle: 'round', borderColor: finished ? (process.exitCode === 0 ? 'green' : 'red') : 'blue', paddingX: 1},
       h(Text, {bold: true, color: 'cyan'}, `LIVE LOG${active >= 0 ? ` · ${checks[active].label}` : ''}`),
+      !finished && h(Progress, {active}),
       ...(recentLogs.length ? recentLogs.map((line, index) => h(Text, {key: `${index}-${line}`, wrap: 'truncate-end'}, line)) : [h(Text, {dimColor: true}, 'Waiting for test output…')])) ,
     h(Text, {dimColor: true}, 'Ctrl+C to cancel'));
 
@@ -190,6 +202,7 @@ function App() {
         h(Box, {flexDirection: 'column', width: Math.floor(columns / 2) - 4},
           h(Text, {bold: true, color: 'white'}, 'FINAL TODO LIST'), ...todoLines(report.finalTodos)))),
     h(Panel, {title: `LIVE LOG${active >= 0 ? ` · ${checks[active].label}` : ''}`, color: finished ? (process.exitCode === 0 ? 'green' : 'red') : 'blue'},
+      !finished && h(Progress, {active}),
       h(Box, {flexDirection: 'column', height: 8, overflow: 'hidden'},
         ...(recentLogs.length ? recentLogs.map((line, index) => h(Text, {
           key: `${index}-${line}`,
