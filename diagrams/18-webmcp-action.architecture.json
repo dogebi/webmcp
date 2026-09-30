@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "설명에서 실제 작업으로",
+    "subtitle": "WebMCP Field Guide",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      280
+    ]
+  },
+  "components": [
+    {
+      "id": "n0",
+      "type": "frontend",
+      "label": "Discover tools",
+      "sublabel": "name / description / schema",
+      "pos": [
+        40,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n1",
+      "type": "backend",
+      "label": "Call tool",
+      "sublabel": "Structured input",
+      "pos": [
+        330,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "external",
+      "label": "Receive result",
+      "sublabel": "Continue the task",
+      "pos": [
+        620,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "n0",
+      "to": "n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "n1",
+      "to": "n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "발견에서 사용성으로",
+    "subtitle": "WebMCP Field Guide",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      280
+    ]
+  },
+  "components": [
+    {
+      "id": "n0",
+      "type": "frontend",
+      "label": "Content discovery",
+      "sublabel": "SEO / search engines",
+      "pos": [
+        40,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n1",
+      "type": "backend",
+      "label": "Tool discovery",
+      "sublabel": "Explicit page capabilities",
+      "pos": [
+        330,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "external",
+      "label": "Agent action",
+      "sublabel": "Use the available tools",
+      "pos": [
+        620,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "n0",
+      "to": "n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "n1",
+      "to": "n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}

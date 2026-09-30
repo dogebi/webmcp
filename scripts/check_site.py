@@ -1,6 +1,7 @@
 ﻿# WebMCP 가이드의 내부 링크와 이미지 경로를 확인합니다.
 from html.parser import HTMLParser
 from pathlib import Path
+import json
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -13,6 +14,7 @@ class SiteCheck(HTMLParser):
         self.images = []
         self.resources = []
         self.missing_alt = []
+        self.diagrams = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
@@ -29,6 +31,10 @@ class SiteCheck(HTMLParser):
                 self.missing_alt.append(attrs.get("src", "(unknown image)"))
         if tag == "script" and attrs.get("src"):
             self.resources.append(attrs["src"])
+        if tag == "iframe":
+            assert attrs.get("title"), "diagram iframe missing title"
+            assert attrs.get("loading") == "lazy", "diagram must lazy load"
+            self.diagrams.append(attrs["src"].split("?")[0])
         if tag == "link" and attrs.get("href", "").startswith("http") is False:
             self.resources.append(attrs.get("href", ""))
 
@@ -44,4 +50,20 @@ assert not missing, f"missing images: {missing}"
 missing = [src for src in parser.resources if not (ROOT / src).is_file()]
 assert not missing, f"missing page resources: {missing}"
 assert (ROOT / "styles.css").is_file() and (ROOT / "app.js").is_file()
+assert len(parser.images) == len(parser.diagrams) == 20
+for src in parser.images:
+    assert src.endswith(".webp"), f"non-WebP image: {src}"
+    data = (ROOT / src).read_bytes()
+    assert data[:4] == b"RIFF" and data[8:12] == b"WEBP", f"invalid WebP: {src}"
+for src in parser.diagrams:
+    path = ROOT / src
+    html = path.read_text(encoding="utf-8")
+    assert "??" not in html, f"corrupted text: {src}"
+    source = json.loads(path.with_suffix(".architecture.json").read_text(encoding="utf-8"))
+    assert source["meta"]["animation"] == "trace"
+    for marker in ['data-animation="trace"', 'data-animate="node"', 'pulse-dot', 'prefers-reduced-motion', 'btn-theme', 'export-menu']:
+        assert marker in html, f"missing animation/control marker {marker}: {src}"
+    if source["connections"]:
+        assert 'data-animate="edge"' in html, f"missing animated arrows: {src}"
 print(f"OK: {len(parser.ids)} unique IDs, {len(parser.images)} image references, all local assets and anchors resolve")
+print("OK: 20 WebP images and Archify diagrams, trace animation, theme/export and reduced motion")

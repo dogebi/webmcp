@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "지원 요청 폼의 선언형 흐름",
+    "subtitle": "WebMCP Field Guide",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      280
+    ]
+  },
+  "components": [
+    {
+      "id": "n0",
+      "type": "frontend",
+      "label": "Support form",
+      "sublabel": "subject / message",
+      "pos": [
+        40,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n1",
+      "type": "backend",
+      "label": "Tool metadata",
+      "sublabel": "support_request",
+      "pos": [
+        330,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "external",
+      "label": "Submit request",
+      "sublabel": "Existing form action",
+      "pos": [
+        620,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "n0",
+      "to": "n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "n1",
+      "to": "n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}

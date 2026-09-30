@@ -1,7 +1,6 @@
-﻿// WebMCP 가이드의 API 탭, 코드 복사, 이미지 미리보기를 관리합니다.
+// WebMCP 가이드의 API 탭, 도식 로딩과 섹션 이동을 관리합니다.
 const tabs = [...document.querySelectorAll("[role='tab']")];
 const panels = [...document.querySelectorAll("[role='tabpanel']")];
-const dialog = document.querySelector(".image-dialog");
 const toast = document.querySelector(".toast");
 let toastTimer;
 
@@ -51,21 +50,49 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
   });
 });
 
-document.querySelectorAll("[data-image]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const image = dialog.querySelector("img");
-    image.src = button.dataset.image;
-    image.alt = button.querySelector("img").alt;
-    dialog.querySelector("figcaption").textContent = button.dataset.caption;
-    dialog.showModal();
-  });
+function revealDiagram(frame) {
+  const page = frame.contentDocument;
+  if (!page?.querySelector("svg")) return;
+  const embed = frame.parentElement;
+  embed.style.height = "380px";
+  embed.style.height = `${Math.max(380, page.documentElement.scrollHeight + 8)}px`;
+  embed.classList.add("is-ready");
+}
+
+document.querySelectorAll(".archify-diagram").forEach((frame) => {
+  frame.addEventListener("load", () => revealDiagram(frame));
+});
+window.addEventListener("resize", () => {
+  document.querySelectorAll(".archify-diagram").forEach(revealDiagram);
 });
 
-dialog.querySelector(".dialog-close").addEventListener("click", () => dialog.close());
-dialog.addEventListener("click", (event) => {
-  if (event.target === dialog) dialog.close();
-});
-dialog.addEventListener("close", () => {
-  const image = dialog.querySelector("img");
-  image.removeAttribute("src");
-});
+const rail = document.querySelector(".section-rail");
+const sectionLinks = [...rail.querySelectorAll("a:not(.back-to-top)")];
+const sections = sectionLinks.map((link) => document.querySelector(link.getAttribute("href")));
+let scrollPending = false;
+
+function updateSectionRail() {
+  rail.classList.toggle("is-visible", window.scrollY > 320);
+  const marker = Math.min(window.innerHeight * 0.3, 220);
+  let current = -1;
+  sections.forEach((section, index) => {
+    if (section.getBoundingClientRect().top <= marker) current = index;
+  });
+  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+    current = sections.length - 1;
+  }
+  sectionLinks.forEach((link, index) => {
+    if (index === current) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+  scrollPending = false;
+}
+
+window.addEventListener("scroll", () => {
+  if (scrollPending) return;
+  scrollPending = true;
+  requestAnimationFrame(updateSectionRail);
+}, { passive: true });
+window.addEventListener("resize", updateSectionRail);
+window.addEventListener("load", updateSectionRail);
+updateSectionRail();

@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "에이전트가 쓰기 쉬운 사이트",
+    "subtitle": "WebMCP Field Guide",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      280
+    ]
+  },
+  "components": [
+    {
+      "id": "n0",
+      "type": "frontend",
+      "label": "Publish tools",
+      "sublabel": "Explain available actions",
+      "pos": [
+        40,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n1",
+      "type": "backend",
+      "label": "Describe inputs",
+      "sublabel": "Explicit input schema",
+      "pos": [
+        330,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "n2",
+      "type": "external",
+      "label": "Enable action",
+      "sublabel": "First mover opportunity",
+      "pos": [
+        620,
+        110
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "n0",
+      "to": "n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "n1",
+      "to": "n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}

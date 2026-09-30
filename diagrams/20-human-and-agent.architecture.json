@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "사람과 에이전트가 함께 사용하는 웹사이트",
+    "subtitle": "목표와 승인에서 탐색과 실행까지",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      420
+    ]
+  },
+  "components": [
+    {
+      "id": "r0n0",
+      "type": "frontend",
+      "label": "People",
+      "sublabel": "Goals / approval",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r0n1",
+      "type": "backend",
+      "label": "Browser UI",
+      "sublabel": "View / click / type",
+      "pos": [
+        330,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r0n2",
+      "type": "external",
+      "label": "Website",
+      "sublabel": "Human-facing experience",
+      "pos": [
+        620,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n0",
+      "type": "frontend",
+      "label": "AI agent",
+      "sublabel": "Delegated tasks",
+      "pos": [
+        40,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n1",
+      "type": "backend",
+      "label": "Page tools",
+      "sublabel": "Discover / call / return",
+      "pos": [
+        330,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n2",
+      "type": "external",
+      "label": "Website",
+      "sublabel": "Agent-facing capabilities",
+      "pos": [
+        620,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "r0n0",
+      "to": "r0n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r0n1",
+      "to": "r0n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r1n0",
+      "to": "r1n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r1n1",
+      "to": "r1n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}

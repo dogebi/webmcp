@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MCP와 WebMCP의 연결 지점",
+    "subtitle": "WebMCP Field Guide",
+    "animation": "trace",
+    "viewBox": [
+      900,
+      420
+    ]
+  },
+  "components": [
+    {
+      "id": "r0n0",
+      "type": "frontend",
+      "label": "Agent",
+      "sublabel": "Server MCP",
+      "pos": [
+        40,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r0n1",
+      "type": "backend",
+      "label": "MCP server",
+      "sublabel": "JSON-RPC",
+      "pos": [
+        330,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r0n2",
+      "type": "external",
+      "label": "Backend tools",
+      "sublabel": "Database / API",
+      "pos": [
+        620,
+        70
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n0",
+      "type": "frontend",
+      "label": "Agent",
+      "sublabel": "WebMCP",
+      "pos": [
+        40,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n1",
+      "type": "backend",
+      "label": "Active page",
+      "sublabel": "Page tool interface",
+      "pos": [
+        330,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "r1n2",
+      "type": "external",
+      "label": "Page logic",
+      "sublabel": "Existing functions",
+      "pos": [
+        620,
+        230
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "r0n0",
+      "to": "r0n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r0n1",
+      "to": "r0n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r1n0",
+      "to": "r1n1",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    },
+    {
+      "from": "r1n1",
+      "to": "r1n2",
+      "fromSide": "right",
+      "toSide": "left",
+      "route": "straight",
+      "variant": "emphasis"
+    }
+  ],
+  "cards": []
+}
