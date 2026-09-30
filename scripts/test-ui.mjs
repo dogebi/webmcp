@@ -1,6 +1,6 @@
 ﻿// npm test 검사 실행과 터미널 대시보드 출력을 담당합니다.
 import React, {useEffect, useState} from 'react';
-import {Box, Text, render, useApp, useWindowSize} from 'ink';
+import {Box, Text, Static, render, useApp, useWindowSize} from 'ink';
 import {spawn} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -62,6 +62,46 @@ function todoLines(todos = [], prefix = 'todo') {
     h(Text, {dimColor: true}, `${todo.number}. `), todo.task));
 }
 
+function Table({headers, data, widths}) {
+  return h(Box, {flexDirection: 'column', borderStyle: 'single', borderColor: 'gray'},
+    [headers, ...data].map((cells, row) => h(Box, {key: row, borderStyle: 'single', borderTop: false, borderBottom: row === 0, borderLeft: false, borderRight: false},
+      cells.map((cell, column) => h(Box, {
+        key: column, width: widths[column], flexGrow: column === cells.length - 1 ? 1 : 0,
+        flexShrink: column === cells.length - 1 ? 1 : 0, minWidth: 0, paddingX: 1, borderStyle: 'single', borderTop: false,
+        borderBottom: false, borderLeft: column > 0, borderRight: false,
+      }, h(Text, {bold: row === 0, color: row === 0 ? 'white' : 'green'}, String(cell)))))));
+}
+
+function FinalReport({report, columns, logs, finalStatus}) {
+  const toolTable = tools => h(Table, {
+    headers: ['(index)', '도구', '이름', '설명'],
+    widths: [10, Math.min(32, Math.floor(columns * 0.32)), 20, undefined],
+    data: tools.map((tool, index) => [index, tool.name, tool.title, tool.description]),
+  });
+  const todos = items => h(Table, {
+    headers: ['(index)', '#', '상태', '할 일'], widths: [10, 5, 14, undefined],
+    data: items.map((todo, index) => [index, todo.number, `${todo.status === '완료' ? '✓' : '○'} ${todo.status}`, todo.task]),
+  });
+  return h(Box, {flexDirection: 'column', width: columns},
+    h(Panel, {title: 'WebMCP Browser Test Client'}, h(Text, null, finalStatus)),
+    h(Text, null, `Target: ${report.target}`),
+    h(Text, {dimColor: true}, 'Local guide · modelContext test shim · todo tools are local test fixtures'),
+    h(Panel, {title: '1. Browser / WebMCP'},
+      h(Text, null, `Chrome        ${report.browser}`),
+      ...['modelContext', 'getTools', 'executeTool'].map(name => h(Text, {key: name}, `${name.padEnd(14)}✓ (test shim)`))),
+    h(Panel, {title: '2. Registered WebMCP Tools'},
+      h(Text, null, 'Page tools'), toolTable(report.tools),
+      h(Text, null, 'Local todo fixture tools'), toolTable(report.todoTools)),
+    h(Panel, {title: '3. Initial Todo List'}, todos(report.initialTodos)),
+    h(Panel, {title: '4. WebMCP Tool Calls · Local Fixture'},
+      report.todoCalls.map((call, index) => h(Text, {key: index, color: 'green'},
+        `✓ ${call.name}: ${call.result.task} (${call.result.createdAt})`))),
+    h(Panel, {title: '5. Final Todo List'}, todos(report.finalTodos)),
+    h(Panel, {title: 'TEST LOG', color: process.exitCode === 0 ? 'green' : 'red'},
+      logs.map((line, index) => h(Text, {key: index}, line))),
+    h(Text, {bold: true, color: process.exitCode === 0 ? 'green' : 'red'}, finalStatus));
+}
+
 function App() {
   const [statuses, setStatuses] = useState(checks.map(() => 'pending'));
   const [active, setActive] = useState(-1);
@@ -102,6 +142,8 @@ function App() {
   const compact = rows < 36;
   const pageToolNames = (report?.tools ?? []).map(tool => tool.name).join(' · ');
   const recentLogs = logs.slice(-(compact ? 2 : 8));
+  if (finished && report) return h(Static, {items: [report]},
+    item => h(FinalReport, {key: 'final-report', report: item, columns, logs, finalStatus}));
   if (compact) return h(Box, {flexDirection: 'column', paddingX: 1, width: columns},
     h(Text, {bold: true, color: 'cyan'}, `◆ ${title}  ·  ${finalStatus}`),
     h(Text, null, `Target  ${report?.target ?? 'starting local guide…'}`),
