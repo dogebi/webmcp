@@ -148,7 +148,6 @@ pre code { font: inherit; }
 .status-band > a { color: var(--amber); font-size: 10px; white-space: nowrap; }
 .visual-notes { margin-top: 20px; }
 .video-section { display: grid; grid-template-columns: .85fr 1.15fr; gap: 8vw; align-items: center; }
-.video-copy h2 { font-size: clamp(34px, 4vw, 52px); }
 .video-copy > p:not(.eyebrow) { max-width: 430px; margin-bottom: 21px; color: #91a89d; font-size: 13px; }
 .timestamp-list { border-top: 1px solid #294237; }
 .timestamp-list a { display: grid; grid-template-columns: 68px 1fr 20px; align-items: center; gap: 12px; min-height: 64px; border-bottom: 1px solid #294237; color: #c6d6ce; font-size: 12px; }

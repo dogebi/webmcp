@@ -41,7 +41,9 @@ class SiteCheck(HTMLParser):
 
 page = ROOT / "index.html"
 parser = SiteCheck()
-parser.feed(page.read_text(encoding="utf-8-sig"))
+page_text = page.read_text(encoding="utf-8-sig")
+parser.feed(page_text)
+assert "영상에서 확인하기." not in page_text and "영상 열기" not in page_text
 assert parser.images, "no images found"
 assert not parser.missing_alt, f"images missing alt text: {parser.missing_alt}"
 assert not (set(parser.references) - parser.ids), f"broken anchors: {set(parser.references) - parser.ids}"
@@ -60,6 +62,7 @@ for src in parser.diagrams:
     path = ROOT / src
     html = path.read_text(encoding="utf-8")
     assert "??" not in html, f"corrupted text: {src}"
+    assert "Built with Archify" not in html and "Press <kbd>T</kbd>" not in html, f"Archify footer message remains: {src}"
     source = json.loads(path.with_suffix(".architecture.json").read_text(encoding="utf-8"))
     assert source["meta"]["animation"] == "trace"
     for marker in ['data-animation="trace"', 'data-animate="node"', 'pulse-dot', 'prefers-reduced-motion', 'btn-theme', 'export-menu']:

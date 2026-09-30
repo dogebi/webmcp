@@ -8,9 +8,9 @@ The guide reflects the WebMCP Community Group draft published on 2026-09-28. Bro
 
 ## Diagrams and checks
 
-The 20 diagrams use Archify JSON sources in `diagrams/`, with `meta.animation: "trace"`. Regenerate their HTML with the Archify renderer; do not edit generated HTML. WebP posters load first, followed by lazy animated embeds with theme and export controls.
+The 21 diagrams use Archify JSON sources in `diagrams/`, with `meta.animation: "trace"`. WebP posters load first, followed by lazy animated embeds with theme and export controls. The default Archify attribution footer is omitted from generated diagrams.
 
-- `python scripts/check_site.py` checks links, WebP assets and animation markers.
+- `python scripts/check_site.py` checks links, WebP assets, removed video CTA copy, omitted Archify attribution and animation markers.
 - `node --check app.js` checks JavaScript syntax.
 - `python scripts/check_browser.py` checks desktop/mobile navigation, image decoding and Archify controls using installed Chrome, Pillow and websocket-client on Windows.
 - `python scripts/check_browser.py --export-webp` also refreshes WebP posters from rendered diagrams.

@@ -151,6 +151,11 @@ try:
         }
         if(frame.contentDocument.querySelector('svg').dataset.animation!=='trace')throw Error(`${slug} animation`);
       }
+      const overflows=[...document.querySelectorAll('#mcp .archify-diagram')].filter(frame=>
+        frame.contentDocument.documentElement.scrollHeight>frame.clientHeight+2 ||
+        frame.contentDocument.documentElement.scrollWidth>frame.clientWidth+2
+      ).map(frame=>({src:frame.src,frame:[frame.clientWidth,frame.clientHeight],document:[frame.contentDocument.documentElement.scrollWidth,frame.contentDocument.documentElement.scrollHeight]}));
+      if(overflows.length)throw Error(`MCP diagram scrollbar: ${JSON.stringify(overflows)}`);
       return 'PASS: legacy MCP and new WebMCP comparison diagrams load with animation';
     })()"""))
     capture = call("Page.captureScreenshot", {"format": "png"})
