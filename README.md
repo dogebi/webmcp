@@ -14,3 +14,4 @@ The 21 diagrams use Archify JSON sources in `diagrams/`, with `meta.animation: "
 - `node --check app.js` checks JavaScript syntax.
 - `python scripts/check_browser.py` checks desktop/mobile navigation, image decoding and Archify controls using installed Chrome, Pillow and websocket-client on Windows.
 - `python scripts/check_browser.py --export-webp` also refreshes WebP posters from rendered diagrams.
+- `npm install` installs the Ink terminal UI dependencies; `npm test` runs the checks above in a live dashboard with the registered guide tools, test log, and local todo-tool demo. The todo flow runs only in the browser test shim and does not change remote data. Requires Node.js 22 or newer.

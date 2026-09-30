@@ -5,11 +5,9 @@ import io
 import json
 import re
 import subprocess
-import sys
 import tempfile
 import threading
 import time
-import unicodedata
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -22,44 +20,6 @@ args = argparse.ArgumentParser()
 args.add_argument("--export-webp", action="store_true")
 args.add_argument("--export-only")
 options = args.parse_args()
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
-
-
-def display_width(value):
-    return sum(2 if unicodedata.east_asian_width(char) in "WF" else 1 for char in str(value))
-
-
-def print_table(headers, rows):
-    widths = [max(display_width(value) for value in column) for column in zip(headers, *rows)]
-    border = "+" + "+".join("-" * (width + 2) for width in widths) + "+"
-    print(border)
-    for row in [headers, *rows]:
-        print("| " + " | ".join(str(value) + " " * (width - display_width(value)) for value, width in zip(row, widths)) + " |")
-        if row is headers:
-            print(border)
-    print(border)
-
-
-def print_webmcp_tui(target, browser, tools, sections):
-    print("\n+" + "=" * 76 + "+")
-    print("|" + "WebMCP Browser Test Client".center(76) + "|")
-    print("+" + "=" * 76 + "+")
-    print(f"Target: {target}\n")
-    print("1. Browser / WebMCP")
-    print(f"Browser    {browser}")
-    print("modelContext (test shim)  ✓")
-    print("getTools (test shim)      ✓")
-    print("executeTool (test shim)  ✓\n")
-    print("2. Registered WebMCP Tools")
-    print_table(["#", "Tool", "Title", "Description"], [
-        [index, tool["name"], tool["title"], tool["description"]]
-        for index, tool in enumerate(tools)
-    ])
-    print("\n3. Guide Sections")
-    print_table(["#", "ID", "Section"], [[index, *section.split(": ", 1)] for index, section in enumerate(sections)])
-
-
 class QuietHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
@@ -167,18 +127,38 @@ try:
       const sections=await find('list_webmcp_guide_sections').execute({});
       if(!sections.includes('why:')||!sections.includes('resources:'))throw Error('section list incomplete');
       if(sections.split('\\n').length!==7)throw Error('section list should match the seven main navigation sections');
+      const guideTools=tools.map(({name,title,description})=>({name,title,description}));
       const read=await document.modelContext.executeTool(find('read_webmcp_guide_section'),{sectionId:'mcp'});
       if(!read.includes('MCP 서버와 WebMCP'))throw Error('section reader failed');
       const search=await document.modelContext.executeTool(find('search_webmcp_guide'),{query:'Community Group'});
       if(!search.includes('practice:'))throw Error('guide search failed');
-      return JSON.stringify({status:'PASS: 3 registered read-only WebMCP tools execute successfully',tools:tools.map(({name,title,description})=>({name,title,description})),sections:sections.split('\\n')});
+      const todos=[
+        {number:1,status:'완료',task:'shadcn/ui 컴포넌트 살펴보기'},
+        {number:2,status:'진행 중',task:'새 할 일 추가해보기'},
+        {number:3,status:'진행 중',task:'완료 체크와 필터 테스트하기'}
+      ];
+      const todoTools=[
+        {name:'add_todo',title:'할 일 추가',description:'새로운 할 일을 추가합니다.',execute:async({task})=>{const row={number:todos.length+1,status:'진행 중',task,createdAt:new Date().toISOString()};todos.push(row);return row}},
+        {name:'complete_todo',title:'할 일 완료',description:'지정한 할 일을 완료 상태로 변경합니다.',execute:async({task})=>{const row=todos.find(todo=>todo.task===task);if(!row)throw Error('todo missing');row.status='완료';return row}},
+        {name:'delete_todo',title:'할 일 삭제',description:'지정한 할 일을 삭제합니다.',execute:async({task})=>{const index=todos.findIndex(todo=>todo.task===task);if(index<0)throw Error('todo missing');return todos.splice(index,1)[0]}},
+        {name:'list_todos',title:'할 일 목록 조회',description:'현재 할 일 목록과 각 항목의 완료 상태를 조회합니다.',execute:async()=>todos.map(todo=>({...todo}))}
+      ];
+      await Promise.all(todoTools.map(tool=>document.modelContext.registerTool(tool)));
+      const findTodo=name=>document.modelContext.tools.find(tool=>tool.name===name);
+      const initialTodos=await document.modelContext.executeTool(findTodo('list_todos'),{});
+      const newTask='Playwright 테스트 할 일';
+      const added=await document.modelContext.executeTool(findTodo('add_todo'),{task:newTask});
+      const completed=await document.modelContext.executeTool(findTodo('complete_todo'),{task:newTask});
+      const deleted=await document.modelContext.executeTool(findTodo('delete_todo'),{task:newTask});
+      const finalTodos=await document.modelContext.executeTool(findTodo('list_todos'),{});
+      if(initialTodos.length!==3||finalTodos.length!==3||completed.status!=='완료'||deleted.task!==newTask)throw Error('todo tool flow failed');
+      return JSON.stringify({status:'PASS: 3 registered read-only WebMCP tools execute successfully',tools:guideTools,sections:sections.split('\\n'),todoTools:todoTools.map(({name,title,description})=>({name,title,description})),todoCalls:[{name:'add_todo',result:added},{name:'complete_todo',result:completed},{name:'delete_todo',result:deleted}],initialTodos,finalTodos});
     })()"""))
-    print_webmcp_tui(
-        f"http://127.0.0.1:{server.server_port}/",
-        browser,
-        registration["tools"],
-        registration["sections"],
-    )
+    print("WEBMCP_REPORT_JSON=" + json.dumps({
+        "target": f"http://127.0.0.1:{server.server_port}/",
+        "browser": browser,
+        **registration,
+    }, ensure_ascii=False))
     print(registration["status"])
     print(evaluate("""(async()=>{
       const assert=(ok,msg)=>{if(!ok)throw Error(msg)};

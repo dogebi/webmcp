@@ -2,7 +2,14 @@
   "name": "webmcp",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "test": "node --check app.js && python scripts/check_site.py && python scripts/check_browser.py"
+    "test": "node scripts/test-ui.mjs"
+  },
+  "devDependencies": {
+    "ink": "^7.1.1",
+    "react": "^19.3.0"
   }
 }

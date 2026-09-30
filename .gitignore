@@ -1,5 +1,6 @@
 ﻿.DS_Store
 Thumbs.db
+node_modules/
 pw-browsers/
 plan.md
 checklist.md
