@@ -96,3 +96,65 @@ window.addEventListener("scroll", () => {
 window.addEventListener("resize", updateSectionRail);
 window.addEventListener("load", updateSectionRail);
 updateSectionRail();
+
+async function registerGuideTools() {
+  if (!document.modelContext?.registerTool) return;
+
+  const guideSections = [...document.querySelectorAll("main section[id]")].map((section) => ({
+    id: section.id,
+    title: section.querySelector("h1, h2")?.innerText.trim() || section.getAttribute("aria-label") || section.id,
+    text: section.innerText.trim(),
+  }));
+  const sectionIds = guideSections.map(({ id }) => id);
+  const readOnly = { readOnlyHint: true };
+
+  try {
+    await Promise.all([
+      document.modelContext.registerTool({
+        name: "list_webmcp_guide_sections",
+        description: "List the sections available in this Korean WebMCP guide.",
+        inputSchema: { type: "object", properties: {}, additionalProperties: false },
+        annotations: readOnly,
+        execute: async () => guideSections.map(({ id, title }) => `${id}: ${title}`).join("\n"),
+      }),
+      document.modelContext.registerTool({
+        name: "read_webmcp_guide_section",
+        description: "Read the text of one section in this Korean WebMCP guide.",
+        inputSchema: {
+          type: "object",
+          properties: { sectionId: { type: "string", enum: sectionIds, description: "Section ID from list_webmcp_guide_sections." } },
+          required: ["sectionId"],
+          additionalProperties: false,
+        },
+        annotations: readOnly,
+        execute: async ({ sectionId }) => {
+          const section = guideSections.find((item) => item.id === sectionId);
+          return section ? `${section.title}\n\n${section.text}` : "Section not found.";
+        },
+      }),
+      document.modelContext.registerTool({
+        name: "search_webmcp_guide",
+        description: "Search the text of this Korean WebMCP guide and return matching section excerpts.",
+        inputSchema: {
+          type: "object",
+          properties: { query: { type: "string", minLength: 1, maxLength: 120, description: "Search phrase, up to 120 characters." } },
+          required: ["query"],
+          additionalProperties: false,
+        },
+        annotations: readOnly,
+        execute: async ({ query }) => {
+          const term = query.trim().toLocaleLowerCase();
+          if (!term) return "Enter a search phrase.";
+          const matches = guideSections.filter(({ title, text }) => `${title}\n${text}`.toLocaleLowerCase().includes(term));
+          return matches.length
+            ? matches.slice(0, 5).map(({ id, title, text }) => `${id}: ${title}\n${text.slice(0, 500)}`).join("\n\n")
+            : "No matching guide sections found.";
+        },
+      }),
+    ]);
+  } catch (error) {
+    console.warn("WebMCP guide tools could not be registered.", error);
+  }
+}
+
+registerGuideTools();

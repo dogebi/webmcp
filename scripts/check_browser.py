@@ -113,8 +113,25 @@ try:
 
         page.write_text(re.sub(r'<img[^>]+src="assets/[^>]+>', dimensions, text), encoding="utf-8")
 
+    call("Page.addScriptToEvaluateOnNewDocument", {"source": "document.modelContext={tools:[],registerTool(tool){this.tools.push(tool);return Promise.resolve()}};"})
     navigate("")
     evaluate("document.documentElement.style.scrollBehavior='auto'")
+    print(evaluate("""(async()=>{
+      await new Promise(r=>setTimeout(r,0));
+      const tools=document.modelContext.tools;
+      const names=tools.map(tool=>tool.name).sort();
+      const expected=['list_webmcp_guide_sections','read_webmcp_guide_section','search_webmcp_guide'].sort();
+      if(JSON.stringify(names)!==JSON.stringify(expected))throw Error(`registered tools: ${names}`);
+      if(tools.some(tool=>tool.annotations?.readOnlyHint!==true))throw Error('tools must be marked read-only');
+      const find=name=>tools.find(tool=>tool.name===name);
+      const sections=await find('list_webmcp_guide_sections').execute({});
+      if(!sections.includes('why:')||!sections.includes('resources:'))throw Error('section list incomplete');
+      const read=await find('read_webmcp_guide_section').execute({sectionId:'mcp'});
+      if(!read.includes('MCP 서버와 WebMCP'))throw Error('section reader failed');
+      const search=await find('search_webmcp_guide').execute({query:'Community Group'});
+      if(!search.includes('practice:'))throw Error('guide search failed');
+      return 'PASS: 3 registered read-only WebMCP tools execute successfully';
+    })()"""))
     print(evaluate("""(async()=>{
       const assert=(ok,msg)=>{if(!ok)throw Error(msg)};
       const wait=()=>new Promise(r=>setTimeout(r,200));
