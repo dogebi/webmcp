@@ -39,8 +39,8 @@
         <div class="hero-meta"><span>W3C Community Group draft</span><span>2026.09.28 초안 확인</span></div>
       </div>
       <figure class="hero-visual image-frame">
-        <button class="image-open" type="button" data-image="assets/11-mcp-and-webmcp.png" data-caption="기존 서버 MCP와 페이지 안의 WebMCP 도구 흐름 비교" aria-label="비교 다이어그램 크게 보기">
-          <img src="assets/11-mcp-and-webmcp.png" alt="서버를 거치는 MCP 흐름과 웹페이지에서 에이전트로 이어지는 WebMCP 흐름 비교" fetchpriority="high">
+        <button class="image-open" type="button" data-image="assets/11-mcp-and-webmcp-v2.png" data-caption="기존 서버 MCP와 페이지 안의 WebMCP 도구 흐름 비교" aria-label="비교 다이어그램 크게 보기">
+          <img src="assets/11-mcp-and-webmcp-v2.png" alt="서버를 거치는 MCP 흐름과 웹페이지에서 에이전트로 이어지는 WebMCP 흐름 비교" fetchpriority="high">
         </button>
         <figcaption><span>FIG 01</span> 도구가 사는 곳이 달라집니다.</figcaption>
         <span class="visual-index" aria-hidden="true">01—19</span>
@@ -65,8 +65,8 @@
           <h3>화면을 보고 조작</h3>
           <p>스크린샷과 DOM을 살피고, 버튼과 폼의 의미를 추정한 뒤 여러 번 왕복합니다.</p>
           <figure class="image-frame">
-            <button class="image-open" type="button" data-image="assets/13-browser-automation.png" data-caption="스크린샷과 DOM을 살펴 화면을 조작하는 브라우저 에이전트">
-              <img src="assets/13-browser-automation.png" alt="브라우저 에이전트가 페이지를 보고 화면 요소를 찾아 조작하는 흐름" loading="lazy">
+            <button class="image-open" type="button" data-image="assets/13-browser-automation-v2.png" data-caption="스크린샷과 DOM을 살펴 화면을 조작하는 브라우저 에이전트">
+              <img src="assets/13-browser-automation-v2.png" alt="브라우저 에이전트가 페이지를 보고 화면 요소를 찾아 조작하는 흐름" loading="lazy">
             </button>
             <figcaption><span>SCREEN → DOM → ACTION</span></figcaption>
           </figure>
@@ -77,8 +77,8 @@
           <h3>의도와 입력을 바로 전달</h3>
           <p>페이지가 기능과 입력값의 모양을 명시합니다. 에이전트는 사용 가능한 도구에서 맞는 작업을 고릅니다.</p>
           <figure class="image-frame">
-            <button class="image-open" type="button" data-image="assets/10-tool-inside-page.png" data-caption="페이지가 도구 이름, 설명, 입력 스키마를 에이전트에게 제공합니다">
-              <img src="assets/10-tool-inside-page.png" alt="웹페이지 안에 정의된 도구 이름과 설명, 입력 스키마를 에이전트가 받는 모습" loading="lazy">
+            <button class="image-open" type="button" data-image="assets/10-tool-inside-page-v2.png" data-caption="페이지가 도구 이름, 설명, 입력 스키마를 에이전트에게 제공합니다">
+              <img src="assets/10-tool-inside-page-v2.png" alt="웹페이지 안에 정의된 도구 이름과 설명, 입력 스키마를 에이전트가 받는 모습" loading="lazy">
             </button>
             <figcaption><span>TOOL → INPUT → RESULT</span></figcaption>
           </figure>
@@ -94,8 +94,8 @@
       </div>
       <div class="model-layout">
         <figure class="image-frame model-main">
-          <button class="image-open" type="button" data-image="assets/01-webmcp-model.png" data-caption="페이지의 기능이 이름, 설명, 입력 스키마를 갖춘 WebMCP 도구로 공개됩니다">
-            <img src="assets/01-webmcp-model.png" alt="하나의 웹사이트가 여러 개의 이름, 설명, 입력 스키마가 있는 WebMCP 도구를 공개하는 그림" loading="lazy">
+          <button class="image-open" type="button" data-image="assets/01-webmcp-model-v2.png" data-caption="페이지의 기능이 이름, 설명, 입력 스키마를 갖춘 WebMCP 도구로 공개됩니다">
+            <img src="assets/01-webmcp-model-v2.png" alt="하나의 웹사이트가 여러 개의 이름, 설명, 입력 스키마가 있는 WebMCP 도구를 공개하는 그림" loading="lazy">
           </button>
           <figcaption><span>PAGE-SCOPED TOOLS</span> 페이지가 자기 기능을 설명합니다.</figcaption>
         </figure>
@@ -104,17 +104,17 @@
           <div class="spec-card"><span class="spec-no">B</span><div><h3>입력</h3><p>필드와 스키마를 보고 필요한 값만 전달합니다.</p></div></div>
           <div class="spec-card"><span class="spec-no">C</span><div><h3>실행</h3><p>사이트 로직이 작동하고 결과가 페이지 맥락으로 돌아옵니다.</p></div></div>
           <figure class="image-frame small-figure">
-            <button class="image-open" type="button" data-image="assets/02-site-tools.png" data-caption="사이트별로 각자 제공하는 도구는 해당 사이트의 작업 맥락에 묶입니다">
-              <img src="assets/02-site-tools.png" alt="서로 다른 세 사이트가 각각 자신의 WebMCP 도구를 제공하는 예시" loading="lazy">
+            <button class="image-open" type="button" data-image="assets/02-site-tools-v2.png" data-caption="사이트별로 각자 제공하는 도구는 해당 사이트의 작업 맥락에 묶입니다">
+              <img src="assets/02-site-tools-v2.png" alt="서로 다른 세 사이트가 각각 자신의 WebMCP 도구를 제공하는 예시" loading="lazy">
             </button>
             <figcaption><span>ORIGIN BY ORIGIN</span></figcaption>
           </figure>
         </div>
       </div>
       <div class="image-row three-up">
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/03-early-adopter.png" data-caption="일찍 도구를 공개하는 웹사이트가 에이전트에서 더 잘 발견될 수 있음을 보여주는 그림"><img src="assets/03-early-adopter.png" alt="먼저 WebMCP 도구를 공개하는 여러 사이트와 first mover 표시" loading="lazy"></button><figcaption><span>FIELD NOTE</span> 에이전트가 쓰기 쉬운 사이트</figcaption></figure>
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/18-webmcp-action.png" data-caption="사이트의 설명과 기능이 AI 에이전트의 실제 작업으로 이어지는 개념도"><img src="assets/18-webmcp-action.png" alt="웹사이트의 기능 설명이 AI 에이전트의 작업으로 이어지는 그림" loading="lazy"></button><figcaption><span>FROM DISCOVERY TO ACTION</span> 설명에서 작업으로</figcaption></figure>
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/19-example-registration.png" data-caption="주문 상태 조회 도구를 폼과 WebMCP 등록 코드로 구성한 예시 화면"><img src="assets/19-example-registration.png" alt="주문 상태 조회 WebMCP 예제 코드가 표시된 웹 애플리케이션" loading="lazy"></button><figcaption><span>EXAMPLE</span> 실제 도구 등록 화면</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/03-early-adopter-v2.png" data-caption="일찍 도구를 공개하는 웹사이트가 에이전트에서 더 잘 발견될 수 있음을 보여주는 그림"><img src="assets/03-early-adopter-v2.png" alt="먼저 WebMCP 도구를 공개하는 여러 사이트와 first mover 표시" loading="lazy"></button><figcaption><span>FIELD NOTE</span> 에이전트가 쓰기 쉬운 사이트</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/18-webmcp-action-v2.png" data-caption="사이트의 설명과 기능이 AI 에이전트의 실제 작업으로 이어지는 개념도"><img src="assets/18-webmcp-action-v2.png" alt="웹사이트의 기능 설명이 AI 에이전트의 작업으로 이어지는 그림" loading="lazy"></button><figcaption><span>FROM DISCOVERY TO ACTION</span> 설명에서 작업으로</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/19-example-registration-v2.png" data-caption="주문 상태 조회 도구의 등록 흐름을 설명하는 예시 도식"><img src="assets/19-example-registration-v2.png" alt="주문 상태 조회 WebMCP 도구의 등록 예시 도식" loading="lazy"></button><figcaption><span>EXAMPLE</span> 도구 등록 예시</figcaption></figure>
       </div>
     </section>
 
@@ -141,7 +141,7 @@
 &lt;/form&gt;</code></pre>
             <button class="copy-button" type="button" data-copy="code-declarative"><span>코드 복사</span><span aria-hidden="true">⧉</span></button>
           </div>
-          <figure class="image-frame api-image"><button class="image-open" type="button" data-image="assets/04-declarative.png" data-caption="표준 HTML form에 도구 이름과 설명을 선언하는 방식"><img src="assets/04-declarative.png" alt="HTML 폼에 도구 이름과 설명을 선언해 도구로 바꾸는 WebMCP 다이어그램" loading="lazy"></button><figcaption><span>FORM → TOOL</span></figcaption></figure>
+          <figure class="image-frame api-image"><button class="image-open" type="button" data-image="assets/04-declarative-v2.png" data-caption="표준 HTML form에 도구 이름과 설명을 선언하는 방식"><img src="assets/04-declarative-v2.png" alt="HTML 폼에 도구 이름과 설명을 선언해 도구로 바꾸는 WebMCP 다이어그램" loading="lazy"></button><figcaption><span>FORM → TOOL</span></figcaption></figure>
           <pre class="visually-hidden" id="code-declarative"><code>&lt;form toolname="search_catalog"
       tooldescription="Search products by keyword"
       action="/search" method="get"&gt;
@@ -172,7 +172,7 @@ if (document.modelContext?.registerTool) {
 // 화면 상태가 끝날 때 lifetime.abort()를 호출합니다.</code></pre>
             <button class="copy-button" type="button" data-copy="code-imperative"><span>코드 복사</span><span aria-hidden="true">⧉</span></button>
           </div>
-          <figure class="image-frame api-image"><button class="image-open" type="button" data-image="assets/06-imperative.png" data-caption="registerTool에 도구 설명, JSON Schema와 실행 함수를 전달하는 방식"><img src="assets/06-imperative.png" alt="자바스크립트 registerTool과 JSON Schema, 실행 함수를 연결하는 다이어그램" loading="lazy"></button><figcaption><span>REGISTER → EXECUTE</span></figcaption></figure>
+          <figure class="image-frame api-image"><button class="image-open" type="button" data-image="assets/06-imperative-v2.png" data-caption="registerTool에 도구 설명, JSON Schema와 실행 함수를 전달하는 방식"><img src="assets/06-imperative-v2.png" alt="자바스크립트 registerTool과 JSON Schema, 실행 함수를 연결하는 다이어그램" loading="lazy"></button><figcaption><span>REGISTER → EXECUTE</span></figcaption></figure>
           <pre class="visually-hidden" id="code-imperative"><code>const lifetime = new AbortController();
 
 if (document.modelContext?.registerTool) {
@@ -194,21 +194,21 @@ if (document.modelContext?.registerTool) {
         <div class="console-foot"><span>선택한 방식은 같은 페이지 기능에 연결됩니다.</span><span>NO EXTRA MCP SERVER REQUIRED</span></div>
       </div>
       <div class="image-row three-up code-gallery">
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/05-declarative-example.png" data-caption="폼과 도구 설명 속성으로 선언하는 예시 코드"><img src="assets/05-declarative-example.png" alt="WebMCP 선언형 API를 사용해 지원 요청 폼을 정의한 코드 화면" loading="lazy"></button><figcaption><span>HTML ANNOTATION</span> 선언형 예시 코드</figcaption></figure>
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/07-imperative-flow.png" data-caption="registerTool에 도구 정의를 전달하고 페이지의 기존 동작에 연결하는 흐름"><img src="assets/07-imperative-flow.png" alt="registerTool이 도구 정의를 등록하고 기존 페이지 로직으로 실행하는 흐름" loading="lazy"></button><figcaption><span>TOOL REGISTRATION</span> 기존 로직에 연결</figcaption></figure>
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/09-imperative-example.png" data-caption="document.modelContext.registerTool로 주문 조회 기능을 등록하는 예시"><img src="assets/09-imperative-example.png" alt="document.modelContext.registerTool로 주문 조회 도구를 등록하는 자바스크립트 코드 화면" loading="lazy"></button><figcaption><span>JAVASCRIPT REGISTRATION</span> 명령형 예시 코드</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/05-declarative-example-v2.png" data-caption="폼과 도구 설명 속성으로 선언하는 예시 코드"><img src="assets/05-declarative-example-v2.png" alt="WebMCP 선언형 API를 사용해 지원 요청 폼을 정의한 코드 화면" loading="lazy"></button><figcaption><span>HTML ANNOTATION</span> 선언형 예시 코드</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/07-imperative-flow-v2.png" data-caption="registerTool에 도구 정의를 전달하고 페이지의 기존 동작에 연결하는 흐름"><img src="assets/07-imperative-flow-v2.png" alt="registerTool이 도구 정의를 등록하고 기존 페이지 로직으로 실행하는 흐름" loading="lazy"></button><figcaption><span>TOOL REGISTRATION</span> 기존 로직에 연결</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/09-imperative-example-v2.png" data-caption="document.modelContext.registerTool로 주문 조회 기능을 등록하는 예시"><img src="assets/09-imperative-example-v2.png" alt="document.modelContext.registerTool로 주문 조회 도구를 등록하는 자바스크립트 코드 화면" loading="lazy"></button><figcaption><span>JAVASCRIPT REGISTRATION</span> 명령형 예시 코드</figcaption></figure>
       </div>
-      <figure class="image-frame wide-image"><button class="image-open" type="button" data-image="assets/16-declarative-imperative.png" data-caption="HTML 선언형 방식과 JavaScript 명령형 방식의 선택지"><img src="assets/16-declarative-imperative.png" alt="WebMCP의 선언형 HTML 방식과 명령형 JavaScript 방식 비교" loading="lazy"></button><figcaption><span>CHOOSE THE SIMPLEST FIT</span> 폼 중심이면 선언형, 코드 제어가 필요하면 명령형</figcaption></figure>
+      <figure class="image-frame wide-image"><button class="image-open" type="button" data-image="assets/16-declarative-imperative-v2.png" data-caption="HTML 선언형 방식과 JavaScript 명령형 방식의 선택지"><img src="assets/16-declarative-imperative-v2.png" alt="WebMCP의 선언형 HTML 방식과 명령형 JavaScript 방식 비교" loading="lazy"></button><figcaption><span>CHOOSE THE SIMPLEST FIT</span> 폼 중심이면 선언형, 코드 제어가 필요하면 명령형</figcaption></figure>
     </section>
 
     <section class="content-section section-wrap compare-section" id="mcp" aria-labelledby="mcp-title">
       <div class="section-heading"><p class="eyebrow">04 / NOT THE SAME LAYER</p><h2 id="mcp-title">MCP 서버와 WebMCP,<br><em>연결 지점이 다릅니다.</em></h2><p>이름은 비슷하지만 같은 구성요소를 뜻하지 않습니다. 기존 MCP 서버를 대체한다고 단정하기보다, 브라우저 안 페이지 작업을 설명하는 별도의 경로로 이해하면 좋습니다.</p></div>
       <div class="mcp-board">
-        <article class="mcp-lane"><div class="lane-title"><span>SERVER TOOLING</span><span>01</span></div><figure class="image-frame"><button class="image-open" type="button" data-image="assets/12-server-mcp.png" data-caption="LLM이 MCP 또는 CLI를 통해 서버 도구와 통신하는 구조"><img src="assets/12-server-mcp.png" alt="LLM에서 MCP 또는 CLI를 통해 서버 도구를 호출하고 결과를 받는 흐름" loading="lazy"></button><figcaption><span>CLIENT ↔ SERVER</span></figcaption></figure><p>서버가 도구를 호스팅하고 클라이언트가 연결합니다. 브라우저 페이지 밖의 데이터와 시스템을 다루는 데 쓰일 수 있습니다.</p></article>
+        <article class="mcp-lane"><div class="lane-title"><span>SERVER TOOLING</span><span>01</span></div><figure class="image-frame"><button class="image-open" type="button" data-image="assets/12-server-mcp-v2.png" data-caption="LLM이 MCP 또는 CLI를 통해 서버 도구와 통신하는 구조"><img src="assets/12-server-mcp-v2.png" alt="LLM에서 MCP 또는 CLI를 통해 서버 도구를 호출하고 결과를 받는 흐름" loading="lazy"></button><figcaption><span>CLIENT ↔ SERVER</span></figcaption></figure><p>서버가 도구를 호스팅하고 클라이언트가 연결합니다. 브라우저 페이지 밖의 데이터와 시스템을 다루는 데 쓰일 수 있습니다.</p></article>
         <div class="lane-divider" aria-hidden="true">OR</div>
-        <article class="mcp-lane mcp-lane-active"><div class="lane-title"><span>PAGE TOOLING</span><span>02</span></div><figure class="image-frame"><button class="image-open" type="button" data-image="assets/15-no-server-required.png" data-caption="별도 MCP 서버 없이 페이지에 이미 있는 기능으로 이어지는 WebMCP 개념도"><img src="assets/15-no-server-required.png" alt="웹페이지에서 에이전트가 페이지 도구를 호출하며 별도 MCP 서버를 거치지 않는 모습" loading="lazy"></button><figcaption><span>PAGE ↔ AGENT</span></figcaption></figure><p>페이지가 도구 인터페이스를 공개하고, 실행은 해당 페이지의 기존 기능으로 연결합니다. 서버/API가 필요한 서비스라면 내부 로직에서 계속 사용할 수 있습니다.</p></article>
+        <article class="mcp-lane mcp-lane-active"><div class="lane-title"><span>PAGE TOOLING</span><span>02</span></div><figure class="image-frame"><button class="image-open" type="button" data-image="assets/15-no-server-required-v2.png" data-caption="별도 MCP 서버 없이 페이지에 이미 있는 기능으로 이어지는 WebMCP 개념도"><img src="assets/15-no-server-required-v2.png" alt="웹페이지에서 에이전트가 페이지 도구를 호출하며 별도 MCP 서버를 거치지 않는 모습" loading="lazy"></button><figcaption><span>PAGE ↔ AGENT</span></figcaption></figure><p>페이지가 도구 인터페이스를 공개하고, 실행은 해당 페이지의 기존 기능으로 연결합니다. 서버/API가 필요한 서비스라면 내부 로직에서 계속 사용할 수 있습니다.</p></article>
       </div>
-      <figure class="image-frame wide-image"><button class="image-open" type="button" data-image="assets/14-legacy-mcp.png" data-caption="기존 서버 중심 MCP 연결 경로를 보여주는 그림"><img src="assets/14-legacy-mcp.png" alt="LLM과 원격 도구 서버 사이를 JSON-RPC MCP가 연결하는 모습" loading="lazy"></button><figcaption><span>ARCHITECTURE NOTE</span> 서버 도구와 페이지 도구는 함께 존재할 수 있습니다.</figcaption></figure>
+      <figure class="image-frame wide-image"><button class="image-open" type="button" data-image="assets/14-legacy-mcp-v2.png" data-caption="기존 서버 중심 MCP 연결 경로를 보여주는 그림"><img src="assets/14-legacy-mcp-v2.png" alt="LLM과 원격 도구 서버 사이를 JSON-RPC MCP가 연결하는 모습" loading="lazy"></button><figcaption><span>ARCHITECTURE NOTE</span> 서버 도구와 페이지 도구는 함께 존재할 수 있습니다.</figcaption></figure>
     </section>
 
     <section class="content-section section-wrap" id="practice" aria-labelledby="practice-title">
@@ -224,8 +224,8 @@ if (document.modelContext?.registerTool) {
       </div>
       <div class="status-band"><div class="status-label"><span class="live-dot"></span> STATUS / SEPTEMBER 2026</div><p>WebMCP는 아직 <strong>Community Group 초안</strong>입니다. 브라우저와 에이전트 지원은 달라질 수 있으니, 프로덕션에서는 기능 감지와 일반 사용자 경로를 함께 준비하세요.</p><a href="https://webmachinelearning.github.io/webmcp/" target="_blank" rel="noopener noreferrer">현재 초안 확인 <span aria-hidden="true">↗</span></a></div>
       <div class="image-row two-up visual-notes">
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/17-seo-aeo.png" data-caption="사람이 찾는 SEO에서 에이전트의 발견과 사용성으로 확장되는 과정"><img src="assets/17-seo-aeo.png" alt="검색엔진에서 사람에게 발견되는 SEO 개념도" loading="lazy"></button><figcaption><span>DISCOVERABILITY</span> SEO에서 에이전트 사용성까지</figcaption></figure>
-        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/08-imperative-api.png" data-caption="Chrome WebMCP API 문서의 명령형 API 안내 화면"><img src="assets/08-imperative-api.png" alt="Chrome for Developers WebMCP 명령형 API 문서 화면" loading="lazy"></button><figcaption><span>IMPLEMENTATION REFERENCE</span> 브라우저별 API 문서를 확인하세요</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/17-seo-aeo-v2.png" data-caption="사람이 찾는 SEO에서 에이전트의 발견과 사용성으로 확장되는 과정"><img src="assets/17-seo-aeo-v2.png" alt="검색엔진에서 사람에게 발견되는 SEO 개념도" loading="lazy"></button><figcaption><span>DISCOVERABILITY</span> SEO에서 에이전트 사용성까지</figcaption></figure>
+        <figure class="image-frame"><button class="image-open" type="button" data-image="assets/08-imperative-api-v2.png" data-caption="WebMCP 명령형 API의 도구 정의 항목을 설명하는 도식"><img src="assets/08-imperative-api-v2.png" alt="WebMCP 명령형 API의 이름, 설명, 입력 스키마와 실행 함수 도식" loading="lazy"></button><figcaption><span>IMPLEMENTATION REFERENCE</span> 브라우저별 API 문서를 확인하세요</figcaption></figure>
       </div>
     </section>
 
