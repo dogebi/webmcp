@@ -32,7 +32,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--green); outline
 .brand-mark { display: grid; width: 35px; height: 35px; place-items: center; border: 1px solid var(--green); color: var(--green); font-size: 15px; letter-spacing: -.12em; }
 .brand-mark span { color: var(--amber); }
 .site-nav { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 2.2vw, 34px); color: #b0c4b9; font-size: 12px; }
-.site-nav a:hover, .header-link:hover, .text-link:hover { color: var(--green); }
+.site-nav a:hover, .header-link:hover { color: var(--green); }
 .header-link { flex: 0 0 auto; color: var(--muted); font-size: 11px; }
 .header-link span { color: var(--green); }
 .section-wrap { width: min(1180px, 89.6vw); margin-inline: auto; }
@@ -48,7 +48,6 @@ h1 em, h2 em { color: var(--green); font-style: normal; }
 .button { display: inline-flex; align-items: center; gap: 22px; min-height: 45px; padding: 0 18px; border: 1px solid var(--line); font-size: 12px; }
 .button-primary { border-color: var(--green); background: var(--green); color: #03110a; font-weight: 700; }
 .button-primary:hover { background: #a1ffd0; }
-.text-link { color: #b5c9be; font-size: 12px; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 36px; color: var(--muted); font: 9px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .hero-meta span + span::before { content: ""; display: inline-block; width: 4px; height: 4px; margin: 0 10px 2px 0; border-radius: 50%; background: var(--amber); }
 .hero-visual { position: relative; z-index: 1; }
