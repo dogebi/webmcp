@@ -112,6 +112,7 @@ async function registerGuideTools() {
     await Promise.all([
       document.modelContext.registerTool({
         name: "list_webmcp_guide_sections",
+        title: "WebMCP 가이드 섹션 목록",
         description: "List the sections available in this Korean WebMCP guide.",
         inputSchema: { type: "object", properties: {}, additionalProperties: false },
         annotations: readOnly,
@@ -119,6 +120,7 @@ async function registerGuideTools() {
       }),
       document.modelContext.registerTool({
         name: "read_webmcp_guide_section",
+        title: "WebMCP 가이드 섹션 읽기",
         description: "Read the text of one section in this Korean WebMCP guide.",
         inputSchema: {
           type: "object",
@@ -134,6 +136,7 @@ async function registerGuideTools() {
       }),
       document.modelContext.registerTool({
         name: "search_webmcp_guide",
+        title: "WebMCP 가이드 검색",
         description: "Search the text of this Korean WebMCP guide and return matching section excerpts.",
         inputSchema: {
           type: "object",

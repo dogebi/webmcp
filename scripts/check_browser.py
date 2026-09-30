@@ -122,6 +122,7 @@ try:
       const names=tools.map(tool=>tool.name).sort();
       const expected=['list_webmcp_guide_sections','read_webmcp_guide_section','search_webmcp_guide'].sort();
       if(JSON.stringify(names)!==JSON.stringify(expected))throw Error(`registered tools: ${names}`);
+      if(tools.some(tool=>!tool.title))throw Error('every tool needs a display title');
       if(tools.some(tool=>tool.annotations?.readOnlyHint!==true))throw Error('tools must be marked read-only');
       const find=name=>tools.find(tool=>tool.name===name);
       const sections=await find('list_webmcp_guide_sections').execute({});
