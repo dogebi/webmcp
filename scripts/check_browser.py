@@ -150,6 +150,25 @@ try:
     })()"""))
     capture = call("Page.captureScreenshot", {"format": "png"})
     (profile / "mobile.png").write_bytes(base64.b64decode(capture["data"]))
+    for width, height in [(844, 390), (667, 375)]:
+        call("Emulation.setDeviceMetricsOverride", {"width": width, "height": height, "deviceScaleFactor": 1, "mobile": True})
+        evaluate("scrollTo(0,0)")
+        time.sleep(.2)
+        print(evaluate("""(()=>{
+          const hero=getComputedStyle(document.querySelector('.hero'));
+          const badge=document.querySelector('.destroy-badge');
+          const box=badge.getBoundingClientRect();
+          if(!matchMedia('(orientation: landscape)').matches)throw Error('landscape media');
+          if(hero.gridTemplateColumns.split(' ').length!==2)throw Error('landscape hero columns');
+          if(document.documentElement.scrollWidth>innerWidth)throw Error('landscape horizontal overflow');
+          if(box.left<0||box.right>document.documentElement.scrollWidth)throw Error('badge overflow');
+          if(badge.href!=='https://destroy.spritefusion.com/?from=badge')throw Error('badge link');
+          if(badge.querySelector('img').alt!=='Destroy this website')throw Error('badge alt');
+          return `PASS: ${innerWidth}x${innerHeight} landscape layout, badge and page fit`;
+        })()"""))
+        if width == 844:
+            capture = call("Page.captureScreenshot", {"format": "png"})
+            (profile / "landscape.png").write_bytes(base64.b64decode(capture["data"]))
     print(f"Screenshots: {profile}")
     call("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-reduced-motion", "value": "reduce"}]})
     evaluate("document.documentElement.style.removeProperty('scroll-behavior')")

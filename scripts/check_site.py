@@ -45,13 +45,14 @@ parser.feed(page.read_text(encoding="utf-8-sig"))
 assert parser.images, "no images found"
 assert not parser.missing_alt, f"images missing alt text: {parser.missing_alt}"
 assert not (set(parser.references) - parser.ids), f"broken anchors: {set(parser.references) - parser.ids}"
-missing = [src for src in parser.images if not (ROOT / src).is_file()]
+missing = [src for src in parser.images if not src.startswith(("http://", "https://")) and not (ROOT / src).is_file()]
 assert not missing, f"missing images: {missing}"
 missing = [src for src in parser.resources if not (ROOT / src).is_file()]
 assert not missing, f"missing page resources: {missing}"
 assert (ROOT / "styles.css").is_file() and (ROOT / "app.js").is_file()
-assert len(parser.images) == len(parser.diagrams) == 20
-for src in parser.images:
+local_images = [src for src in parser.images if not src.startswith(("http://", "https://"))]
+assert len(local_images) == len(parser.diagrams) == 20
+for src in local_images:
     assert src.endswith(".webp"), f"non-WebP image: {src}"
     data = (ROOT / src).read_bytes()
     assert data[:4] == b"RIFF" and data[8:12] == b"WEBP", f"invalid WebP: {src}"
